@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: genesys-backend
+    restart: always
+    ports:
+      - "3011:3011"
+    networks:
+      - genesys-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: genesys-frontend
+    restart: always
+    ports:
+      - "3012:3012"
+    networks:
+      - genesys-net
+
+  orchestrator:
+    build:
+      context: ./backend/orchestrator_api
+      dockerfile: Dockerfile
+    container_name: genesys-orchestrator
+    networks:
+      - genesys-net
+    ports:
+      - "8010:8000"
+
+networks:
+  genesys-net:
+    external: true
+

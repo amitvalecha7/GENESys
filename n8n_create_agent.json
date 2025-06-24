@@ -1,0 +1,68 @@
+{
+  "name": "Create Agent via Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-agent"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://genesys.dhii.ai/agents",
+        "options": {},
+        "bodyParametersJson": "={{ $json }}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [500, 200]
+    },
+    {
+      "parameters": {
+        "channel": "#general",
+        "text": "Agent created: {{$node[\"HTTP Request\"].json.agent.name}}"
+      },
+      "name": "Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [750, 200]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

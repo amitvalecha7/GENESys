@@ -1,0 +1,35 @@
+{
+  "name": "List Blueprints",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://genesys.dhii.ai/blueprint",
+        "responseFormat": "json"
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [300, 200]
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [550, 200]
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
